@@ -1,0 +1,131 @@
+package portfolio;
+import java.net.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.*;
+
+/**
+ *
+ * @author Ilir Krasniqi
+ */
+
+public class URLReader extends JFrame implements ActionListener {
+	   String link,find,result;
+	   JLabel jbl1, jbl2, jbl3, jbl4;
+	   JTextField linktxt, findtxt, resulttxt;
+	   JButton  jbtfind, jbtsave, jbtclear, jbtexit;
+	public URLReader (){
+		
+		JPanel p1 = new JPanel();
+		p1.setLayout(new FlowLayout());
+		JLabel jbl1 = new JLabel ("URL");
+		p1.add(jbl1);
+		linktxt = new JTextField (15);
+		p1.add(linktxt);
+		
+		JPanel p2 = new JPanel();
+		p2.setLayout(new FlowLayout());
+		JLabel jbl2 = new JLabel ("Find");
+		p2.add(jbl2);
+		findtxt = new JTextField (15);
+		p2.add(findtxt);
+
+		JPanel p3 = new JPanel();
+		p3.setLayout(new FlowLayout());
+		JLabel jbl3 = new JLabel ("Result");
+		p3.add(jbl3);
+		resulttxt = new JTextField (15);
+		p3.add(resulttxt);
+		
+		JPanel p4 = new JPanel();
+		p4.setLayout(new BorderLayout());
+		p4.add(p1,BorderLayout.NORTH);
+		p4.add(p2,BorderLayout.CENTER);
+		p4.add(p3,BorderLayout.SOUTH);
+		
+		JPanel p5 = new JPanel();
+		p5.setLayout(new FlowLayout());
+		JButton jbtfind = new JButton ("Find");
+		JButton jbtsave = new JButton ("Save");
+		JButton jbtclear = new JButton ("Clear");
+		JButton jbtexit = new JButton ("Exit");
+		jbtfind.addActionListener(clc);
+		jbtsave.addActionListener(sv);
+		jbtexit.addActionListener(al);
+	 	jbtclear.addActionListener(clr);
+	 	p5.add(jbtfind);
+		p5.add(jbtsave);
+		p5.add(jbtclear);
+		p5.add(jbtexit);
+		
+		JPanel main = new JPanel();
+		main.setLayout(new BorderLayout());
+		main.add(p4,BorderLayout.NORTH);
+		main.add(p5,BorderLayout.CENTER);
+		
+		add(main);
+	
+	}
+	
+	ActionListener clr = new ActionListener() {
+	    public void actionPerformed(ActionEvent e) {
+	    	findtxt.setText("");
+			linktxt.setText("");
+			resulttxt.setText("");
+} };
+	ActionListener al = new ActionListener() {
+	    public void actionPerformed(ActionEvent e) {
+	        System.exit(0); 
+} };
+	ActionListener clc = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			String one = linktxt.getText();
+			String two = findtxt.getText();
+			String three = resulttxt.getText();
+			try {
+			
+			URL o = new URL(one);
+			BufferedReader in = new BufferedReader(
+					new InputStreamReader(o.openStream()));
+			
+			String inputLine;
+			while ((inputLine=in.readLine())!=null) 
+				
+			if(inputLine.contains(two))
+				System.out.println(three);	
+		
+			
+			{in.close();}
+		
+		
+		
+		}catch(Exception b){}
+		}};
+	ActionListener sv = new ActionListener() {
+	    public void actionPerformed(ActionEvent a) {
+	    	try {
+	    		 BufferedWriter p = new BufferedWriter(new FileWriter("MyOrders.txt"));
+	             p.write("The website is: "+linktxt.getText()
+	             +"\n"+"Searching for: "+findtxt.getText()
+	             +"\n"+"Found: "+resulttxt.getText());
+	    	 p.close();
+		}catch(Exception b){}
+} };
+public static void main (String [] args) {
+	
+	URLReader frame = new URLReader();
+	frame.setTitle("Website Scraper");
+	frame.setLocationRelativeTo(null);
+	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	frame.setSize( 400, 200);
+	frame.setVisible(true);
+}
+public void actionPerformed(ActionEvent arg0) {
+	
+}}
